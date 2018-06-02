@@ -1,0 +1,63 @@
+import get_properties as gp
+import os
+
+
+__author__ = 'ConnorZhong'
+class File_Information:
+
+    """
+    文件/文件夹通用
+    如果使用Directory类，则使用 Directory.dir_path 创建
+    """
+    def __init__(self, path = None):
+        """
+        整合所有需要的信息，通过propertys 来获取。
+        分别有：
+        权限字符串
+        创建时间
+        最后修改时间
+        文件拥有者
+        文件大小
+        """
+        if (path == None):
+            path = gp.getCurrentPath()
+
+        self._permission_string = gp.getFilePermission_str(path = path)
+        self._create_time = gp.getFileCreatedTime(path = path)
+        self._last_modified_time = gp.getFileModifiedTime(path = path)
+        self._file_owner = gp.getFileOwner(path = path)
+        self._file_size = os.path.getsize(path)
+
+    """
+    各种属性，如property名所示
+    """
+    @property
+    def permission_string(self):
+        return self._permission_string
+
+    @property
+    def create_time(self):
+        return self._create_time
+
+    @property
+    def last_modified_time(self):
+        return self._last_modified_time
+
+    @property
+    def file_owner(self):
+        return self._file_owner
+
+    @property
+    def file_size(self):
+        return self._file_size
+
+    def _get_file_info(self, path=None):
+        if path == None:
+            path = gp.getCurrentPath()
+        return os.stat(path)
+
+if __name__ == '__main__':
+    FI = File_Information()
+    print(FI.permission_string)
+    print(FI.file_size)
+    print(FI.file_owner)
